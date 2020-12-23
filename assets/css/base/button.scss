@@ -1,0 +1,47 @@
+.btn {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  outline: 0;
+  transition: .1s linear;
+  font-family: inherit;
+  //&:active{
+  //  transform: scale(.8);
+  //}
+}
+
+.btn_numpad {
+  padding: 7px 25px;
+  min-width: 73px;
+
+
+  font-size: 25px;
+  text-align: center;
+  border-radius: 23px;
+
+  &:active {
+    background: $secondary;
+    transform: scale(.8);
+  }
+
+}
+
+.btn_numpad-aside {
+  padding: 30px 7px;
+  min-width: 55px;
+  margin-bottom: 17px;
+  &:last-child{
+    margin-bottom: 0;
+  }
+
+  color: $primary;
+  background: $secondary;
+  font-size: 25px;
+  text-align: center;
+  border-radius: 23px;
+
+  &:active {
+
+    transform: scale(.8);
+  }
+}
