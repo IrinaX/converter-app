@@ -6,7 +6,7 @@
 
 <style>
 html {
-  background: #F9FAFC;
+  background: $main;
   font-family: 'Saira', Roboto, sans-serif;
   font-size: 25px;
 
