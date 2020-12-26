@@ -4,12 +4,10 @@
   </div>
 </template>
 
-<style>
+<style lang="scss">
 html {
   background: $main;
-  font-family: 'Saira', Roboto, sans-serif;
-  font-size: 25px;
-
+  font: $font;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   -moz-osx-font-smoothing: grayscale;
