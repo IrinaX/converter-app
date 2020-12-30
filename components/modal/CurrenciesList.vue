@@ -20,13 +20,14 @@
       <currency-item
         v-for="item in currencies"
         :key="item.ID"
+        @click.native="changeActiveCurr(item.ID)"
+        :class="{active: d_active}"
       >
          <span>
             <span class="currency-item__abbr">{{ item.CharCode }}</span>
             <span class="currency-item__currency">{{ item.Name }}</span>
           </span>
       </currency-item>
-
     </div>
   </div>
 </template>
@@ -47,21 +48,41 @@ export default {
   computed: {
     ...mapGetters([
       "isModalActive",
-      'currencies'
+      'currencies',
+      'activeCurrencies',
+      'activeCurrency'
     ])
+  },
+  data() {
+    return {
+      d_active: false
+    };
   },
   methods: {
     ...mapActions([
-      "TOGGLE_MODAL"
+      "TOGGLE_MODAL",
+      "CHANGE_ACTIVE_CURRENCY_VALUE"
     ]),
     toggleModal() {
       this.TOGGLE_MODAL();
+
+    },
+    changeActiveCurr(id){
+this.CHANGE_ACTIVE_CURRENCY_VALUE(id);
+      console.log(this.activeCurrency);
+      for (let i = 0; i < this.currencies.length; i++) {
+//todo: сделать выбор валюты при нажатии на нее и показывать активные валюты
+      }
+      this.d_active = id === this.activeCurrencies.first.ID || id === this.activeCurrencies.second.ID;
     }
   },
 };
 </script>
 
 <style scoped lang="scss">
+.active{
+  background: indianred;
+}
 .modal {
   background: $main;
   position: absolute;

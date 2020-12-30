@@ -88,7 +88,7 @@ export default {
       color: $text;
 
       &::placeholder {
-        color: $text;
+        color: rgba($text,.5);
       }
     }
   }

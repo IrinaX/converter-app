@@ -47,6 +47,7 @@ export const state = () => ({
       Value: 44.049,
     },
   ],
+  activeCurrency: null,
   activeCurrencies: {
     first: {
       CharCode: "GBP",
@@ -67,23 +68,30 @@ export const state = () => ({
       Value: 56.8404,
     }
   },
+
 });
 
 export const mutations = {
   CHANGE_IS_MODAL_ACTIVE(state) {
     state.isModalActive = !state.isModalActive;
   },
+  CHANGE_ACTIVE_CURRENCY(state, prop) {
+    state.activeCurrency = prop;
+  }
 };
 
 export const actions = {
   TOGGLE_MODAL({commit}) {
     commit("CHANGE_IS_MODAL_ACTIVE");
   },
+  CHANGE_ACTIVE_CURRENCY_VALUE({commit},prop) {
+    commit("CHANGE_ACTIVE_CURRENCY",prop);
+  }
 };
 
 export const getters = {
   isModalActive: s => s.isModalActive,
   currencies: s => s.currencies,
   activeCurrencies: s => s.activeCurrencies,
-
+  activeCurrency: s => s.activeCurrency,
 };
