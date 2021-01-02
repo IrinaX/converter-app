@@ -1,39 +1,64 @@
 <template>
   <div class="date">
-    <div class="date__item"
-         v-for="(item, id) in d_date"
-         :key="id"
-    >
-      <label class="date__item-title">
-        {{ item.title }}
-        <input type="number" class="date__item-value" :placeholder="item.value"/>
-      </label>
-    </div>
+    <!--    <div class="date__item"-->
+    <!--         v-for="(item, id) in d_date"-->
+    <!--         :key="id"-->
+    <!--    >-->
+    <!--      <label class="date__item-title">-->
+    <!--        {{ item.title }}-->
+    <!--        <input type="number" class="date__item-value" :placeholder="item.value"/>-->
+    <!--      </label>-->
+    <!--    </div>-->
+    <input type="date" v-model="d_date"/>
   </div>
 </template>
 
 <script>
+import {mapGetters, mapActions} from "vuex";
+
 export default {
   name: "VDate",
   data() {
     return {
-      d_date: [
-        {
-          title: "День",
-          value: new Date().getDate(),
-        },
-        {
-          title: "Месяц",
-          value: new Date().getMonth(),
-        },
-        {
-          title: "Год",
-          value: new Date().getFullYear(),
-        }
-      ],
+      d_date: null,//YYYY-MM-DD
     };
   },
+  created() {
+    if (this.g_date){
+      this.d_date = this.g_date;
+    }else {
+      let date = {
+        yyyy: new Date().getFullYear(),
+        mm: new Date().getMonth(),
+        dd: new Date().getDate(),
+      };
+      date.mm++;
+      date.mm = this.addZero(date.mm);
+      date.dd = this.addZero(date.dd);
+      this.d_date = date.yyyy + "-" + date.mm + "-" + date.dd;
+    }
+  },
+  watch: {
+    d_date() {
+      this.a_setDate(this.d_date)
+    }
+  },
+  computed: {
+    ...mapGetters([
+      "g_date"
+    ])
+  },
+  methods: {
+    ...mapActions([
+      "a_setDate"
+    ]),
+    addZero(date) {
+      if (date.toString().length < 2) {
+        return "0" + date.toString();
+      }
+    },
 
+  },
 };
 </script>
 
@@ -88,7 +113,7 @@ export default {
       color: $text;
 
       &::placeholder {
-        color: rgba($text,.5);
+        color: rgba($text, .5);
       }
     }
   }

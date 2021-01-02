@@ -2,30 +2,30 @@
   <div class="currencies">
     <div class="currency-card">
       <change-currency
-        @click.native="toggleModal"
+        @click.native="toggleModal(0)"
       >
-        <span class="currency-card__abbr">{{ activeCurrencies.first.CharCode }}</span>
+        <span class="currency-card__abbr">{{ g_activeCurrencies[0].CharCode }}</span>
       </change-currency>
       <label class="currency-card__currency">
         <input type="number" class="currency-card__amount" placeholder="0"
                v-model="d_amountFirst"
                @click="d_index = 0"
         />
-        {{ activeCurrencies.first.Name }}
+        {{ g_activeCurrencies[0].Name }}
       </label>
     </div>
     <div class="currency-card">
       <change-currency
-        @click.native="toggleModal"
+        @click.native="toggleModal(1)"
       >
-        <span class="currency-card__abbr">{{ activeCurrencies.second.CharCode }}</span>
+        <span class="currency-card__abbr">{{ g_activeCurrencies[1].CharCode }}</span>
       </change-currency>
       <label class="currency-card__currency">
         <input type="number" class="currency-card__amount" placeholder="0"
                v-model="d_amountSecond"
                @click="d_index = 1"
         />
-        {{ activeCurrencies.second.Name }}
+        {{ g_activeCurrencies[1].Name }}
       </label>
     </div>
   </div>
@@ -49,36 +49,67 @@ export default {
   },
   computed: {
     ...mapGetters([
-      "isModalActive",
-      "activeCurrencies",
+      "g_isModalActive",
+      "g_activeCurrencies",
+      "g_clickedCurrencyIndex",
+      "g_firstCurrVal",
+      "g_secondCurrVal",
     ]),
-
   },
   watch: {
     d_amountFirst() {
-      this.calcAmount();
+      if (this.d_amountFirst > 0) {
+        this.calcAmount();
+      } else {
+        this.d_amountFirst = "";
+        this.d_amountSecond = "";
+      }
+      this.a_setFirstCurrVal(this.d_amountFirst);
+      this.a_setSecondCurrVal(this.d_amountSecond);
     },
     d_amountSecond() {
-      this.calcAmount();
+      if (this.d_amountSecond > 0) {
+        this.calcAmount();
+      } else {
+        this.d_amountFirst = "";
+        this.d_amountSecond = "";
+      }
+      this.a_setFirstCurrVal(this.d_amountFirst);
+      this.a_setSecondCurrVal(this.d_amountSecond);
     }
+  },
+  created() {
+    this.d_amountFirst = this.g_firstCurrVal;
+    this.d_amountSecond = this.g_secondCurrVal;
   },
   methods: {
     ...mapActions([
-      "TOGGLE_MODAL"
+      "a_toggleModal",
+      "a_clickedCurrencyIndex",
+      "a_setFirstCurrVal",
+      "a_setSecondCurrVal"
     ]),
-    toggleModal() {
-      this.TOGGLE_MODAL();
+    toggleModal(index) {
+      this.a_toggleModal();
+      // this.clickedCurrencyIndex = index;
+      this.a_clickedCurrencyIndex(index);
+      // console.log(this.clickedCurrencyIndex);
     },
     calcAmount() {
-      let firstVal = this.activeCurrencies.first.Value / this.activeCurrencies.first.Nominal;
-      let secondVal = this.activeCurrencies.second.Value / this.activeCurrencies.second.Nominal;
-      let result;
+      let firstVal = this.g_activeCurrencies[0].Value / this.g_activeCurrencies[0].Nominal;
+      let secondVal = this.g_activeCurrencies[1].Value / this.g_activeCurrencies[1].Nominal;
       if (this.d_index === 1) {
-        result = (secondVal / firstVal) * this.d_amountSecond;
+        let result = (secondVal / firstVal) * this.d_amountSecond;
         this.d_amountFirst = +result.toFixed(2);
+        if (this.d_amountSecond > 0 && this.d_amountSecond < 999) {
+          this.d_amountFirst = +result.toFixed(4);
+        }
       } else {
-        result = (firstVal / secondVal) * this.d_amountFirst;
+        let result = (firstVal / secondVal) * this.d_amountFirst;
         this.d_amountSecond = +result.toFixed(2);
+        if (this.d_amountFirst > 0 && this.d_amountFirst < 999) {
+          this.d_amountSecond = +result.toFixed(4);
+        }
       }
     }
   },
@@ -118,7 +149,7 @@ export default {
     color: $text;
 
     &::placeholder {
-      color: $text;
+      color: rgba($text, .5);
     }
   }
 

@@ -18,10 +18,10 @@
     <!--    </div>-->
     <div class="modal__body">
       <currency-item
-        v-for="item in currencies"
+        v-for="item in g_currencies"
         :key="item.ID"
-        @click.native="changeActiveCurr(item.ID)"
-        :class="{active: d_active}"
+        @click.native="changeActiveCurr(item)"
+        :class="{active: d_active === item.ID}"
       >
          <span>
             <span class="currency-item__abbr">{{ item.CharCode }}</span>
@@ -47,42 +47,43 @@ export default {
   name: "CurrenciesList",
   computed: {
     ...mapGetters([
-      "isModalActive",
-      'currencies',
-      'activeCurrencies',
-      'activeCurrency'
+      "g_isModalActive",
+      "g_currencies",
+      "g_activeCurrencies",
+      "g_clickedCurrencyIndex"
     ])
   },
   data() {
     return {
-      d_active: false
+      d_active: null
     };
   },
   methods: {
     ...mapActions([
-      "TOGGLE_MODAL",
-      "CHANGE_ACTIVE_CURRENCY_VALUE"
+      "a_toggleModal",
+      "a_setActiveCurr"
     ]),
     toggleModal() {
-      this.TOGGLE_MODAL();
-
+      this.a_toggleModal();
     },
-    changeActiveCurr(id){
-this.CHANGE_ACTIVE_CURRENCY_VALUE(id);
-      console.log(this.activeCurrency);
-      for (let i = 0; i < this.currencies.length; i++) {
-//todo: сделать выбор валюты при нажатии на нее и показывать активные валюты
-      }
-      this.d_active = id === this.activeCurrencies.first.ID || id === this.activeCurrencies.second.ID;
+    changeActiveCurr(item) {
+      console.log(this.g_clickedCurrencyIndex);
+      let index = this.g_clickedCurrencyIndex;
+      this.a_setActiveCurr({item, index});
+
+      // console.log(this.activeCurrencies);
+      this.a_toggleModal();
+      // this.d_active = id === this.activeCurrencies[0].ID || id === this.activeCurrencies[1].ID ? id:null;
     }
   },
 };
 </script>
 
 <style scoped lang="scss">
-.active{
+.active {
   background: indianred;
 }
+
 .modal {
   background: $main;
   position: absolute;
@@ -96,7 +97,7 @@ this.CHANGE_ACTIVE_CURRENCY_VALUE(id);
     align-items: center;
     justify-content: space-between;
     //margin-bottom: 30px;
-    margin-bottom: 0;
+    margin-bottom: 10px;
 
     .title {
       width: 100%;
