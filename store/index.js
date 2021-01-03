@@ -30,7 +30,7 @@ export const state = () => ({
 export const mutations = {
   m_fetchCurrencies(state, data) {
     state.s_data = data;
-    console.log(data);
+    console.log("m_fetchCurrencies", data);
   },
   m_isModalActive(state) {
     state.s_isModalActive = !state.s_isModalActive;
@@ -53,23 +53,11 @@ export const mutations = {
 };
 
 export const actions = {
-  async a_fetchCurrencies({commit}, date = "2020/12/25") {
-    // let res = await fetch(//str.replace(/тест/g,"прошел") "2020/12/25"
-    //   "https://www.cbr-xml-daily.ru/archive/"+date+"/daily_json.js"
-    // );
-    // await fetch("https://www.cbr-xml-daily.ru/daily_json.js")
-    //   .then(resp => {
-    //     console.log(resp);
-    //     resp.json();
-    //   })
-    //   .then(data => console.log(data))
-    //   .catch(err=>console.log(err));
-
-    let response = await fetch(
-      "https://www.cbr-xml-daily.ru/daily_json.js"
-    );
-    const data = await response.json();
-    commit("m_fetchCurrencies", data);
+  async a_fetchCurrencies(ctx,url) {
+    let response = await fetch(url)
+      .then(response => response.json())
+      .catch(error => console.log(error));//todo: флаг тута нада нащальника
+    ctx.commit("m_fetchCurrencies", response);
   },
   a_toggleModal({commit}) {
     commit("m_isModalActive");
@@ -93,7 +81,7 @@ export const actions = {
 
 export const getters = {
   g_isModalActive: s => s.s_isModalActive,
-  g_data:s => s.s_data,
+  g_data: s => s.s_data,
   g_activeCurrencies: s => s.s_activeCurrencies,
   g_clickedCurrencyIndex: s => s.s_clickedCurrencyIndex,
   g_firstCurrVal: s => s.s_firstCurrVal,
