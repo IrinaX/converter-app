@@ -18,7 +18,7 @@
     <!--    </div>-->
     <div class="modal__body">
       <currency-item
-        v-for="item in g_currencies"
+        v-for="item in g_data.Valute"
         :key="item.ID"
         @click.native="changeActiveCurr(item)"
         :class="{active: d_active === item.ID}"
@@ -48,7 +48,7 @@ export default {
   computed: {
     ...mapGetters([
       "g_isModalActive",
-      "g_currencies",
+      "g_data",
       "g_activeCurrencies",
       "g_clickedCurrencyIndex"
     ])
@@ -67,7 +67,7 @@ export default {
       this.a_toggleModal();
     },
     changeActiveCurr(item) {
-      console.log(this.g_clickedCurrencyIndex);
+      // console.log(this.g_clickedCurrencyIndex);
       let index = this.g_clickedCurrencyIndex;
       this.a_setActiveCurr({item, index});
 

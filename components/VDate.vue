@@ -1,15 +1,6 @@
 <template>
   <div class="date">
-    <!--    <div class="date__item"-->
-    <!--         v-for="(item, id) in d_date"-->
-    <!--         :key="id"-->
-    <!--    >-->
-    <!--      <label class="date__item-title">-->
-    <!--        {{ item.title }}-->
-    <!--        <input type="number" class="date__item-value" :placeholder="item.value"/>-->
-    <!--      </label>-->
-    <!--    </div>-->
-    <input type="date" v-model="d_date"/>
+    <input type="date" class="date__input" v-model="d_date"/>
   </div>
 </template>
 
@@ -24,9 +15,9 @@ export default {
     };
   },
   created() {
-    if (this.g_date){
+    if (this.g_date) {
       this.d_date = this.g_date;
-    }else {
+    } else {
       let date = {
         yyyy: new Date().getFullYear(),
         mm: new Date().getMonth(),
@@ -40,7 +31,7 @@ export default {
   },
   watch: {
     d_date() {
-      this.a_setDate(this.d_date)
+      this.a_setDate(this.d_date);
     }
   },
   computed: {
@@ -64,57 +55,89 @@ export default {
 
 <style scoped lang="scss">
 .date {
-  display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   margin-bottom: 20px;
 
-  &__item {
-    padding: 0 20px;
-    position: relative;
+  &__input {
+    //background: transparent;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
 
-    &:after {
-      content: '';
-      width: 2px;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      right: 0;
-      background-color: rgba($primary, .5);
-    }
-
-    &:last-child {
-      &:after {
-        content: none;
-      }
-
-      .date__item-value {
-        min-width: 70px;
-      }
-    }
-
-    &-title {
-      font-size: 14px;
-    }
-
-    &-value {
-      min-width: 35px;
-      font: $font;
-      font-weight: 500;
-      font-size: 25px;
-      line-height: 120%;
-      text-align: center;
-      background: transparent;
-      border: none;
+    &:active {
       outline: none;
-      width: 100%;
-      padding: 0;
-      color: $text;
+    }
+    &:focus{
+      outline: none;
+    }
 
-      &::placeholder {
-        color: rgba($text, .5);
+    &::-webkit-datetime-edit {
+      padding: 10px;
+      margin: 0 -20px 0 0;
+    }
+
+    &::-webkit-datetime-edit-fields-wrapper {
+      background: transparent;
+      padding: 0;
+      margin: 0;
+
+    }
+
+    &::-webkit-datetime-edit-text {
+      color: $primary;
+      //padding: 0 0.3em;
+      padding: 0;
+
+    }
+
+    &::-webkit-datetime-edit-month-field {
+      color: $text;
+      &:focus{
+        background: transparent;
+        color: $primary;
       }
+    }
+
+    &::-webkit-datetime-edit-day-field {
+      color: $text;
+      &:focus{
+        background: transparent;
+        color: $primary;
+      }
+    }
+
+    &::-webkit-datetime-edit-year-field {
+      color: $text;
+      &:focus{
+        background: transparent;
+        color: $primary;
+      }
+    }
+
+    &::-webkit-inner-spin-button {
+      //display: none;
+      //width: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    &::-webkit-calendar-picker-indicator {
+      //display: none;
+      //width: 0;
+      padding: 0;
+      margin: 0;
+      //background: orange;
+      outline: none;
+    }
+
+    &::-webkit-clear-button {
+      padding: 0;
+      margin: 0;
+      //display: none;
     }
   }
 }
