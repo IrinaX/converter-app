@@ -67,13 +67,9 @@ export default {
       this.a_toggleModal();
     },
     changeActiveCurr(item) {
-      // console.log(this.g_clickedCurrencyIndex);
       let index = this.g_clickedCurrencyIndex;
       this.a_setActiveCurr({item, index});
-
-      // console.log(this.activeCurrencies);
       this.a_toggleModal();
-      // this.d_active = id === this.activeCurrencies[0].ID || id === this.activeCurrencies[1].ID ? id:null;
     }
   },
 };

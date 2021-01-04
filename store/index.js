@@ -1,6 +1,9 @@
+import axios from "axios";
+
 export const state = () => ({
   s_isModalActive: false,
   s_data: null,
+  s_error: null,
   s_clickedCurrencyIndex: null,
   s_activeCurrencies: [
     {
@@ -30,7 +33,7 @@ export const state = () => ({
 export const mutations = {
   m_fetchCurrencies(state, data) {
     state.s_data = data;
-    console.log("m_fetchCurrencies", data);
+    // console.log("m_fetchCurrencies", data);
   },
   m_isModalActive(state) {
     state.s_isModalActive = !state.s_isModalActive;
@@ -49,14 +52,31 @@ export const mutations = {
   },
   m_date(state, date) {
     state.s_date = date;
+  },
+  m_error(state, condition) {
+    state.s_error = condition;
   }
 };
 
 export const actions = {
-  async a_fetchCurrencies(ctx,url) {
-    let response = await fetch(url)
-      .then(response => response.json())
-      .catch(error => console.log(error));//todo: флаг тута нада нащальника
+  async a_fetchCurrencies(ctx, url) {
+
+
+    let response = await fetch(url, {
+      method: "GET",
+      mode: "no-cors",//убирает ошибку core НО появляется SyntaxError: Unexpected end of input at eval
+      //https://stackoverrun.com/ru/q/12541514
+      /*https://www.reddit.com/r/AskProgramming/comments/emwp7c/unexpected_end_of_input_with_fetch_from_json_api/
+      * "no-cors" isn't magically going to make the CORS error disappear
+      * CORS is something you need to set on the backend. If it isn't configured, you can't access
+      * that endpoint directly from the frontend. You'll have to use a proxy to forward the request for you
+      * */
+    }).then(response => response.json())
+      .catch(error => console.log(error));
+
+    // let response = await fetch(url);
+    // let data = await response.json();
+    // console.log(data);
     ctx.commit("m_fetchCurrencies", response);
   },
   a_toggleModal({commit}) {

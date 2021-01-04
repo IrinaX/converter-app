@@ -12,40 +12,54 @@ export default {
   data() {
     return {
       d_date: null,//YYYY-MM-DD
+      d_year: new Date().getFullYear(),
+      d_month: new Date().getMonth(),
+      d_day: new Date().getDate(),
     };
   },
   created() {
-    if (this.g_date) {
-      this.d_date = this.g_date;
-    } else {
-      let date = {
-        yyyy: new Date().getFullYear(),
-        mm: new Date().getMonth(),
-        dd: new Date().getDate(),
-      };
-      date.mm++;
-      date.mm = this.addZero(date.mm);
-      date.dd = this.addZero(date.dd);
-      this.d_date = date.yyyy + "-" + date.mm + "-" + date.dd;
-    }
+    this.d_month = this.addZero( ++this.d_month);
+    this.d_day = this.addZero( this.d_day)
+    this.d_date = this.d_year + "-" + this.d_month + "-" + this.d_day;
+  },
+  async mounted() {
+    //https://www.cbr-xml-daily.ru/daily_json.js
+    //   // let url = "https://www.cbr-xml-daily.ru/archive/" + date + "/daily_json.js";
+    await this.a_fetchCurrencies("https://www.cbr-xml-daily.ru/archive/" + this.d_date + "/daily_json.js")
+      // .then(response => console.log(response))
+      // .catch(error => console.log(error));
+
+    console.log("g_data", this.g_data);
   },
   watch: {
     d_date() {
-      this.a_setDate(this.d_date);
+      // this.a_fetchCurrencies("https://www.cbr-xml-daily.ru/archive/" + this.changeFormat(this.d_date, '/') + "/daily_json.js");
     }
   },
   computed: {
     ...mapGetters([
-      "g_date"
+      "g_date",
+      "g_data"
     ])
   },
   methods: {
     ...mapActions([
-      "a_setDate"
+      "a_setDate",
+      "a_fetchCurrencies",
     ]),
     addZero(date) {
       if (date.toString().length < 2) {
         return "0" + date.toString();
+      }
+    },
+    changeFormat(date, separator) {
+      if (typeof date === "string") {
+        return date.replace(/-/g, separator);
+      } else {
+        date.mm++;
+        date.mm = this.addZero(date.mm);
+        date.dd = this.addZero(date.dd);
+        return date.yyyy + separator + date.mm + separator + date.dd;
       }
     },
 
@@ -71,7 +85,8 @@ export default {
     &:active {
       outline: none;
     }
-    &:focus{
+
+    &:focus {
       outline: none;
     }
 
@@ -96,7 +111,8 @@ export default {
 
     &::-webkit-datetime-edit-month-field {
       color: $text;
-      &:focus{
+
+      &:focus {
         background: transparent;
         color: $primary;
       }
@@ -104,7 +120,8 @@ export default {
 
     &::-webkit-datetime-edit-day-field {
       color: $text;
-      &:focus{
+
+      &:focus {
         background: transparent;
         color: $primary;
       }
@@ -112,7 +129,8 @@ export default {
 
     &::-webkit-datetime-edit-year-field {
       color: $text;
-      &:focus{
+
+      &:focus {
         background: transparent;
         color: $primary;
       }

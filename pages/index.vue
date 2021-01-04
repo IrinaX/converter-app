@@ -27,23 +27,9 @@ export default {
   },
   data() {
     return {
-      d_url: ""
     };
   },
-  async mounted() {
-    let date = {
-      yyyy: new Date().getFullYear(),
-      mm: new Date().getMonth(),
-      dd: new Date().getDate(),
-    };
-    date.mm++;
-    date.mm = this.addZero(date.mm);
-    date.dd = this.addZero(date.dd);
-    date = date.yyyy + "/" + date.mm + "/" + date.dd;
-    // console.log(date.replace(/-/g, "/"));
-    // let url = "https://www.cbr-xml-daily.ru/archive/" + date + "/daily_json.js";
-    await this.a_fetchCurrencies("https://www.cbr-xml-daily.ru/daily_json.js");
-  },
+
   /* todo: план капкан!!!
   * Когда экземпляр был создан присваиваем ему текущую дату и вызываем экшон с дефолтным урлом.
   * Когда выбранная дата совпадает с сегодняшней то также вызываем экшон с дефолтным урлом.
@@ -52,18 +38,14 @@ export default {
   computed: {
     ...mapGetters([
       "g_isModalActive",
-      "g_date"
+      "g_date",
+      "g_data"
     ])
   },
   methods: {
     ...mapActions([
       "a_fetchCurrencies",
     ]),
-    addZero(date) {
-      if (date.toString().length < 2) {
-        return "0" + date.toString();
-      }
-    },
   },
 };
 </script>
