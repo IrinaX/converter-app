@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const state = () => ({
   s_isModalActive: false,
   s_data: null,
@@ -60,24 +58,29 @@ export const mutations = {
 
 export const actions = {
   async a_fetchCurrencies(ctx, url) {
-
-
-    let response = await fetch(url, {
-      method: "GET",
-      mode: "no-cors",//убирает ошибку core НО появляется SyntaxError: Unexpected end of input at eval
-      //https://stackoverrun.com/ru/q/12541514
-      /*https://www.reddit.com/r/AskProgramming/comments/emwp7c/unexpected_end_of_input_with_fetch_from_json_api/
-      * "no-cors" isn't magically going to make the CORS error disappear
-      * CORS is something you need to set on the backend. If it isn't configured, you can't access
-      * that endpoint directly from the frontend. You'll have to use a proxy to forward the request for you
-      * */
-    }).then(response => response.json())
-      .catch(error => console.log(error));
-
-    // let response = await fetch(url);
+    // const response = await axios.get(url)
+    //   .then(res => res.data)
+    let response = await fetch(url)
+      .then(res => {
+        if (res.ok) {
+          return res
+        } else {
+          throw new Error(res.statusText)
+        }})
+      .then((res)=> {
+        ctx.dispatch('a_error',false);
+        return res.json();
+      })
+      .catch(()=> {
+        ctx.dispatch('a_error',true);
+        return console.log("some error");
+      });
     // let data = await response.json();
     // console.log(data);
     ctx.commit("m_fetchCurrencies", response);
+  },
+  a_error({commit},condition){
+    commit("m_error", condition);
   },
   a_toggleModal({commit}) {
     commit("m_isModalActive");
@@ -107,4 +110,5 @@ export const getters = {
   g_firstCurrVal: s => s.s_firstCurrVal,
   g_secondCurrVal: s => s.s_secondCurrVal,
   g_date: s => s.s_date,
+  g_error: s => s.s_error,
 };

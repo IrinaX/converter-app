@@ -5,7 +5,8 @@
     >
       <h1 class="title">Конвертер валют</h1>
       <v-date></v-date>
-      <calc-currency></calc-currency>
+      <calc-currency v-if="g_error===false"></calc-currency>
+      <div v-if="g_error">Извините на эту дату нет курсов</div>
     </div>
     <currencies-list
       v-if="g_isModalActive"
@@ -39,7 +40,8 @@ export default {
     ...mapGetters([
       "g_isModalActive",
       "g_date",
-      "g_data"
+      "g_data",
+      'g_error'
     ])
   },
   methods: {
