@@ -23,7 +23,14 @@ export default {
   width: 100%;
   text-align: left;
   position: relative;
-  padding: 12px 0;
+  padding: 12px 20px;
+  &.active{
+      background: $primary;
+      color: $light;
+      svg >path{
+        fill: $light;
+      }
+  }
 
   //&:after {
   //  content: '';

@@ -33,7 +33,6 @@
   &:last-child{
     margin-bottom: 0;
   }
-
   color: $primary;
   background: $secondary;
   font-size: 25px;
@@ -47,6 +46,18 @@
   }
 }
 .btn_change-curr{
+  &:active{
+    transform: none;
+  }
+}
+.btn_date{
+  font-size: 20px;
+  padding: 10px;
+  transition: 0s linear;
+  &.active{
+    background: $primary;
+    color: $light;
+  }
   &:active{
     transform: none;
   }

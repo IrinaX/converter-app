@@ -18,5 +18,9 @@ export default {
 <style scoped lang="scss">
 .btn_change-curr{
   min-width: 80px;
+ path{
+    fill: $primary;
+  }
+
 }
 </style>

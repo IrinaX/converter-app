@@ -6,6 +6,7 @@
       ></btn-back>
       <h2 class="title">Выберите валюту</h2>
     </div>
+<!--    если время будет, сделать панель-->
     <!--    <div class="search-panel">-->
     <!--      <svg class="search-panel__search-icon" width="19" height="19" viewBox="0 0 19 19" fill="none"-->
     <!--           xmlns="http://www.w3.org/2000/svg">-->
@@ -53,20 +54,26 @@ export default {
       "g_clickedCurrencyIndex"
     ])
   },
+  mounted() {
+// if (this.g_activeCurrencies[0].ID === )
+    this.d_active = this.g_activeCurrencies[this.g_clickedCurrencyIndex].ID;
+  },
   data() {
     return {
       d_active: null
     };
   },
+
   methods: {
     ...mapActions([
       "a_toggleModal",
-      "a_setActiveCurr"
+      "a_setActiveCurr",
     ]),
     toggleModal() {
       this.a_toggleModal();
     },
     changeActiveCurr(item) {
+      this.d_active = item.ID;
       let index = this.g_clickedCurrencyIndex;
       this.a_setActiveCurr({item, index});
       this.a_toggleModal();
@@ -76,9 +83,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.active {
-  background: indianred;
-}
+
 
 .modal {
   background: $main;
@@ -87,13 +92,16 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
+  padding-top: 30px;
+  padding-bottom: 20px;
 
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     //margin-bottom: 30px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    padding: 0 20px;
 
     .title {
       width: 100%;

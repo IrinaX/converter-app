@@ -25,7 +25,11 @@ export const state = () => ({
   ],
   s_firstCurrVal: null,
   s_secondCurrVal: null,
-  s_date: null,
+  s_date: {
+    year:null,
+    month:null,
+    day:null,
+  },
 });
 
 export const mutations = {
