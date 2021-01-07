@@ -118,7 +118,7 @@ export default {
 
 <style scoped lang="scss">
 .currencies{
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 .currency-card {
   display: flex;

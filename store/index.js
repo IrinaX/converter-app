@@ -25,11 +25,8 @@ export const state = () => ({
   ],
   s_firstCurrVal: null,
   s_secondCurrVal: null,
-  s_date: {
-    year:null,
-    month:null,
-    day:null,
-  },
+  s_date: null,
+  s_info:null,
 });
 
 export const mutations = {
@@ -57,6 +54,9 @@ export const mutations = {
   },
   m_error(state, condition) {
     state.s_error = condition;
+  },
+  m_info(state,text){
+    state.s_info = text;
   }
 };
 
@@ -103,6 +103,9 @@ export const actions = {
   },
   a_setDate({commit}, date) {
     commit("m_date", date);
+  },
+  a_setInfo({commit},text){
+    commit('m_info',text);
   }
 };
 
@@ -115,4 +118,5 @@ export const getters = {
   g_secondCurrVal: s => s.s_secondCurrVal,
   g_date: s => s.s_date,
   g_error: s => s.s_error,
+  g_info: s => s.s_info,
 };

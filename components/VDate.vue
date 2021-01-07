@@ -43,6 +43,7 @@
 
 <script>
 import {mapGetters, mapActions} from "vuex";
+import moment from "moment";
 
 export default {
   name: "VDate",
@@ -54,7 +55,6 @@ export default {
         day: new Date().getDate(),
       },
       d_fullDate: null,
-      flag: null,
       d_renderData: {
         d_yearsArr: [2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006,
           2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992],
@@ -80,6 +80,8 @@ export default {
       day: this.addZero(this.d_date.day),
     };
     this.d_fullDate = this.d_date.year + "/" + this.d_date.month + "/" + this.d_date.day;
+    this.a_setDate(this.d_fullDate);
+    this.a_setInfo("Данные на " + this.d_fullDate + ':');
     await this.a_fetchCurrencies("https://www.cbr-xml-daily.ru/daily_json.js");
   },
   created() {
@@ -90,13 +92,15 @@ export default {
     ...mapGetters([
       "g_date",
       "g_data",
-      "g_error"
+      "g_error",
+      "g_info"
     ])
   },
   methods: {
     ...mapActions([
       "a_setDate",
       "a_fetchCurrencies",
+      "a_setInfo",
     ]),
     addZero(date) {
       if (date.toString().length < 2) {
@@ -105,27 +109,7 @@ export default {
         return date;
       }
     },
-    changeFormat(date, separator) {
-      if (typeof date === "string") {
-        return date.replace(/-/g, separator);
-      } else {
-        date.mm++;
-        date.mm = this.addZero(date.mm);
-        date.dd = this.addZero(date.dd);
-        return date.yyyy + separator + date.mm + separator + date.dd;
-      }
-    },
-    // fetchCurr(url) {
-    //   return fetch(url)
-    //     .then(response => {
-    //       this.flag = false;
-    //       return response.json();
-    //     })
-    //     .catch(error => {
-    //       this.flag = true;
-    //      return console.log(error);
-    //     });
-    // }
+
     async changeDate(title, value) {
       let currDate = {
         year: new Date().getFullYear(),
@@ -142,11 +126,50 @@ export default {
       if (title === "day") {
         this.d_date.day = value;
       }
+      this.d_fullDate = this.setFullDate(this.d_date);
+      this.a_setDate(this.d_fullDate);
       if (this.d_date.year == currDate.year && (this.d_date.month > currDate.month || (this.d_date.day >= currDate.day && this.d_date.month == currDate.month))) {
-        console.log("https://www.cbr-xml-daily.ru/daily_json.js");
+        console.log("дата больше");
+        this.a_setInfo("Данные на " + this.setFullDate(currDate) + ":");
+        await this.a_fetchCurrencies("https://www.cbr-xml-daily.ru/daily_json.js");
+      } else {
+        if (this.d_date.year == 1992 && (this.d_date.month < 7 || (this.d_date.day === 1 && this.d_date.month === 7))) {
+          console.log("дата меньше");
+          this.a_setInfo("Данные на 1992/07/01:");
+          await this.a_fetchCurrencies("https://www.cbr-xml-daily.ru/archive/1992/07/01/daily_json.js");
+        } else {
+          await this.findUrl();
+        }
       }
-      if (this.d_date.year == 1992 && (this.d_date.month < 7 || (this.d_date.day === 1 && this.d_date.month === 7))) {
-        console.log("https://www.cbr-xml-daily.ru/archive/1992/07/01/daily_json.js");
+    },
+    setFullDate(date, separator = "/") {
+      let year = date.year;
+      let month = this.addZero(date.month);
+      let day = this.addZero(date.day);
+      return year + separator + month + separator + day;
+    },
+    async findUrl() {
+      await this.a_fetchCurrencies("https://www.cbr-xml-daily.ru/archive/" + this.d_fullDate + "/daily_json.js");
+      // let date = this.d_date;
+      if (this.g_error === false) {
+        this.a_setInfo("Данные на " + this.d_fullDate + ":");
+      } else {
+        let momentDate = this.d_date;
+        let oldFullDate = this.d_fullDate;
+        while (this.g_error) {
+          momentDate = moment(this.setFullDate(momentDate, "-")).subtract(1, "days").format("L");
+          console.log("momentDate_string", momentDate);
+          momentDate = {
+            year: momentDate.slice(6, 10),
+            month: momentDate.slice(0, 2),
+            day: momentDate.slice(3, 5),
+          };
+          console.log("momentDate_object", momentDate);
+          this.d_fullDate = this.setFullDate(momentDate);
+          console.log("d_fullDate", this.d_fullDate);
+          await this.a_fetchCurrencies("https://www.cbr-xml-daily.ru/archive/" + this.d_fullDate + "/daily_json.js");
+        }
+        this.a_setInfo("Данные на " + oldFullDate + " отсутствуют. " + "Показаны данные на " + this.d_fullDate + ":");
       }
     }
   },
@@ -176,9 +199,25 @@ export default {
   .date__item-btns {
     width: 100%;
     max-height: 44px;
-    overflow: scroll;
+    overflow-x: scroll;
+    overflow-y: hidden;
     display: flex;
     justify-content: flex-start;
+
+    &::-webkit-scrollbar {
+      width: auto;
+      height: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #d2d2d2;
+      border-radius: 20px;
+    }
+
   }
 
   .separator {
