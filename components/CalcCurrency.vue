@@ -56,23 +56,43 @@ export default {
       "g_secondCurrVal",
     ]),
   },
+  mounted() {
+    console.log('calcCurr');
+    // if (localStorage.firstCurrVal) {
+    //   this.d_amountFirst = localStorage.firstCurrVal;
+    // }
+    // if (localStorage.secondCurrVal) {
+    //   this.d_amountSecond = localStorage.secondCurrVal;
+    // }
+    // if (localStorage.activeCurrencies) {
+    //   // console.log(
+    //   //   JSON.parse(localStorage.activeCurrencies)
+    //   // );
+    //   JSON.parse(localStorage.activeCurrencies).forEach((item, i, arr) =>{
+    //     let index = i
+    //     this.a_setActiveCurr({item,index})
+    //   })
+    // }
+  },
   watch: {
     d_amountFirst() {
       if (this.d_amountFirst > 0) {
+        this.d_amountFirst = this.d_amountFirst*1
         this.calcAmount();
       } else {
-        this.d_amountFirst = "";
-        this.d_amountSecond = "";
+        this.d_amountFirst = 0;
+        this.d_amountSecond = 0;
       }
       this.a_setFirstCurrVal(this.d_amountFirst);
       this.a_setSecondCurrVal(this.d_amountSecond);
     },
     d_amountSecond() {
       if (this.d_amountSecond > 0) {
+        this.d_amountSecond =this.d_amountSecond*1
         this.calcAmount();
       } else {
-        this.d_amountFirst = "";
-        this.d_amountSecond = "";
+        this.d_amountFirst = 0;
+        this.d_amountSecond = 0;
       }
       this.a_setFirstCurrVal(this.d_amountFirst);
       this.a_setSecondCurrVal(this.d_amountSecond);
@@ -87,7 +107,8 @@ export default {
       "a_toggleModal",
       "a_clickedCurrencyIndex",
       "a_setFirstCurrVal",
-      "a_setSecondCurrVal"
+      "a_setSecondCurrVal",
+      'a_setActiveCurr'
     ]),
     toggleModal(index) {
       this.a_toggleModal();
@@ -117,9 +138,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.currencies{
+.currencies {
   margin-bottom: 40px;
 }
+
 .currency-card {
   display: flex;
   align-items: center;

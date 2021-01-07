@@ -31,6 +31,7 @@ export const state = () => ({
     day: new Date().getDate(),
   },
   s_info:null,
+  s_renderKey: Date.now().toString()
 });
 
 export const mutations = {
@@ -45,12 +46,27 @@ export const mutations = {
   },
   m_activeCurrencies(state, {item, index}) {
     state.s_activeCurrencies[index] = item;
+    // if (window.localStorage.activeCurrencies){
+    //   window.localStorage.activeCurrencies = JSON.stringify(state.s_activeCurrencies);
+    // }else{
+    //   window.localStorage.setItem('activeCurrencies',JSON.stringify(state.s_activeCurrencies))
+    // }
   },
   m_firstCurrVal(state, val) {
     state.s_firstCurrVal = val;
+    // if (window.localStorage.firstCurrVal){
+    //   window.localStorage.firstCurrVal = val;
+    // }else{
+    //   window.localStorage.setItem('firstCurrVal',JSON.stringify(val))
+    // }
   },
   m_secondCurrVal(state, val) {
     state.s_secondCurrVal = val;
+    // if (window.localStorage.secondCurrVal){
+    //   window.localStorage.secondCurrVal = val;
+    // }else{
+    //   window.localStorage.setItem('secondCurrVal',JSON.stringify(val))
+    // }
   },
   m_date(state, date) {
     state.s_date = date;
@@ -60,6 +76,9 @@ export const mutations = {
   },
   m_info(state,text){
     state.s_info = text;
+  },
+  m_RenderKey(state, key){
+    state.s_renderKey = key;
   }
 };
 
@@ -105,6 +124,9 @@ export const actions = {
   },
   a_setInfo({commit},text){
     commit('m_info',text);
+  },
+  a_setRenderKey({commit},key){
+    commit('m_RenderKey',key);
   }
 };
 
@@ -118,4 +140,5 @@ export const getters = {
   g_date: s => s.s_date,
   g_error: s => s.s_error,
   g_info: s => s.s_info,
+  g_renderKey: s => s.s_renderKey,
 };

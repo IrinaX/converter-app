@@ -49,12 +49,6 @@ export default {
   name: "VDate",
   data() {
     return {
-      // d_date: {
-      //   year: new Date().getFullYear(),
-      //   month: new Date().getMonth(),
-      //   day: new Date().getDate(),
-      // },
-      // d_month:this.g_date.month + 1,
       d_fullDate: null,
       d_renderData: {
         d_yearsArr: [2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006,
@@ -72,9 +66,10 @@ export default {
   async mounted() {
     this.d_activeBtn = {
       year: this.g_date.year,
-      month: this.g_date.month,
-      day: this.g_date.day,
+      month: this.g_date.month*1,
+      day: this.g_date.day*1,
     };
+    // console.log(this.d_activeBtn);
     this.a_setDate({
       year: this.d_activeBtn.year,
       month: this.addZero(this.d_activeBtn.month),
@@ -90,7 +85,8 @@ export default {
       "g_date",
       "g_data",
       "g_error",
-      "g_info"
+      "g_info",
+      'g_renderKey'
     ])
   },
   methods: {
@@ -98,6 +94,7 @@ export default {
       "a_setDate",
       "a_fetchCurrencies",
       "a_setInfo",
+      'a_setRenderKey'
     ]),
     addZero(date) {
       if (date.toString().length < 2) {
@@ -107,7 +104,6 @@ export default {
       }
     },
     async changeDate(title, value) {
-
       if (title === "year") {
         this.a_setDate({
           year: value,
@@ -129,7 +125,7 @@ export default {
           day: value,
         });
       }
-      console.log(this.g_date);
+      // console.log(this.g_date);
       this.d_fullDate = this.setFullDate(this.g_date);
       await this.validateDate();
     },
@@ -140,18 +136,19 @@ export default {
         day: new Date().getDate(),
       };
       if (this.g_date.year == currDate.year && (this.g_date.month > currDate.month || (this.g_date.day >= currDate.day && this.g_date.month == currDate.month))) {
-        console.log("дата больше");
+        // console.log("дата больше или равно");
         this.a_setInfo("Данные на " + this.setFullDate(currDate) + ":");
         await this.a_fetchCurrencies("https://www.cbr-xml-daily.ru/daily_json.js");
       } else {
         if (this.g_date.year == 1992 && (this.g_date.month < 7 || (this.g_date.day === 1 && this.g_date.month === 7))) {
-          console.log("дата меньше");
+          // console.log("дата меньше или равно");
           this.a_setInfo("Данные на 1992/07/01:");
           await this.a_fetchCurrencies("https://www.cbr-xml-daily.ru/archive/1992/07/01/daily_json.js");
         } else {
           await this.findUrl();
         }
       }
+      await this.a_setRenderKey(Date.now().toString())
     },
     setFullDate(date, separator = "/") {
       let year = date.year;
@@ -168,18 +165,19 @@ export default {
         let oldFullDate = this.d_fullDate;
         while (this.g_error) {
           momentDate = moment(this.setFullDate(momentDate, "-")).subtract(1, "days").format("L");
-          console.log("momentDate_string", momentDate);
+          // console.log("momentDate_string", momentDate);
           momentDate = {
             year: momentDate.slice(6, 10),
             month: momentDate.slice(0, 2),
             day: momentDate.slice(3, 5),
           };
-          console.log("momentDate_object", momentDate);
+          // console.log("momentDate_object", momentDate);
           this.d_fullDate = this.setFullDate(momentDate);
-          console.log("d_fullDate", this.d_fullDate);
+          // console.log("d_fullDate", this.d_fullDate);
           await this.a_fetchCurrencies("https://www.cbr-xml-daily.ru/archive/" + this.d_fullDate + "/daily_json.js");
         }
         this.a_setInfo("Данные на " + oldFullDate + " отсутствуют. " + "Показаны данные на " + this.d_fullDate + ":");
+
       }
     }
   },
