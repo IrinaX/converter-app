@@ -25,14 +25,17 @@ export const state = () => ({
   ],
   s_firstCurrVal: null,
   s_secondCurrVal: null,
-  s_date: null,
+  s_date: {
+    year: new Date().getFullYear(),
+    month: new Date().getMonth()+1,
+    day: new Date().getDate(),
+  },
   s_info:null,
 });
 
 export const mutations = {
   m_fetchCurrencies(state, data) {
     state.s_data = data;
-    // console.log("m_fetchCurrencies", data);
   },
   m_isModalActive(state) {
     state.s_isModalActive = !state.s_isModalActive;
@@ -62,8 +65,6 @@ export const mutations = {
 
 export const actions = {
   async a_fetchCurrencies(ctx, url) {
-    // const response = await axios.get(url)
-    //   .then(res => res.data)
     let response = await fetch(url)
       .then(res => {
         if (res.ok) {
@@ -75,12 +76,10 @@ export const actions = {
         ctx.dispatch('a_error',false);
         return res.json();
       })
-      .catch(()=> {
+      .catch((e)=> {
         ctx.dispatch('a_error',true);
-        return console.log("some error");
+        return console.log(e);
       });
-    // let data = await response.json();
-    // console.log(data);
     ctx.commit("m_fetchCurrencies", response);
   },
   a_error({commit},condition){

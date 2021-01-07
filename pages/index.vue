@@ -3,16 +3,10 @@
     <div class="main"
          v-if="g_isModalActive === false"
     >
-
       <h1 class="title">Конвертер валют</h1>
-<!--      <div class="info">Данные на {{g_date}}</div>-->
-      <div class="info">{{g_info}}</div>
+      <div class="info">{{ g_info }}</div>
       <calc-currency></calc-currency>
-
       <v-date></v-date>
-
-      <!--      <div v-if="g_error">Извините на эту дату нет курсов</div>-->
-
     </div>
     <transition name="slide-fade">
       <currencies-list
@@ -43,7 +37,7 @@ export default {
       "g_date",
       "g_data",
       "g_error",
-      'g_info'
+      "g_info"
     ])
   },
   methods: {
@@ -85,7 +79,8 @@ export default {
 .main {
   padding: 30px 20px 20px;
 }
-.info{
+
+.info {
   line-height: 140%;
   font-size: 15px;
   margin-bottom: 16px;
