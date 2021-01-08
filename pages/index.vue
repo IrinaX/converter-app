@@ -5,7 +5,8 @@
     >
       <h1 class="title">Конвертер валют</h1>
       <div class="info">{{ g_info }}</div>
-      <calc-currency :key="g_renderKey"></calc-currency>
+      <calc-currency       :key="g_renderKey"></calc-currency>
+
       <v-date></v-date>
     </div>
     <transition name="slide-fade">
@@ -32,8 +33,17 @@ export default {
     ...mapGetters([
       "g_isModalActive",
       "g_info",
-      'g_renderKey'
+      'g_renderKey',
+      'g_data'
     ])
+  },
+  mounted() {
+
+  },
+  methods: {
+   ...mapActions([
+     'a_setActiveCurr'
+   ])
   },
 };
 </script>

@@ -44,7 +44,6 @@
 <script>
 import {mapGetters, mapActions} from "vuex";
 import moment from "moment";
-
 export default {
   name: "VDate",
   data() {
@@ -86,7 +85,8 @@ export default {
       "g_data",
       "g_error",
       "g_info",
-      'g_renderKey'
+      'g_renderKey',
+      "g_activeCurrencies",
     ])
   },
   methods: {
@@ -94,7 +94,8 @@ export default {
       "a_setDate",
       "a_fetchCurrencies",
       "a_setInfo",
-      'a_setRenderKey'
+      'a_setRenderKey',
+      "a_setActiveCurr",
     ]),
     addZero(date) {
       if (date.toString().length < 2) {
@@ -148,6 +149,12 @@ export default {
           await this.findUrl();
         }
       }
+      this.g_activeCurrencies.forEach((itm, i)=>{
+        let CharCode = this.g_activeCurrencies[i].CharCode;
+        let item = this.g_data.Valute[CharCode];
+        let index = i;
+        this.a_setActiveCurr({item,index})
+      })
       await this.a_setRenderKey(Date.now().toString())
     },
     setFullDate(date, separator = "/") {
@@ -177,7 +184,6 @@ export default {
           await this.a_fetchCurrencies("https://www.cbr-xml-daily.ru/archive/" + this.d_fullDate + "/daily_json.js");
         }
         this.a_setInfo("Данные на " + oldFullDate + " отсутствуют. " + "Показаны данные на " + this.d_fullDate + ":");
-
       }
     }
   },

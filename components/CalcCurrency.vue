@@ -9,7 +9,7 @@
       <label class="currency-card__currency">
         <input type="number" class="currency-card__amount" placeholder="0"
                v-model="d_amountFirst"
-               @click="d_index = 0"
+               @click="a_clickedInputIndex(0)"
         />
         {{ g_activeCurrencies[0].Name }}
       </label>
@@ -23,7 +23,7 @@
       <label class="currency-card__currency">
         <input type="number" class="currency-card__amount" placeholder="0"
                v-model="d_amountSecond"
-               @click="d_index = 1"
+               @click="a_clickedInputIndex(1)"
         />
         {{ g_activeCurrencies[1].Name }}
       </label>
@@ -44,20 +44,26 @@ export default {
     return {
       d_amountFirst: null,
       d_amountSecond: null,
-      d_index: null,
+
     };
   },
   computed: {
     ...mapGetters([
+      "g_data",
       "g_isModalActive",
       "g_activeCurrencies",
       "g_clickedCurrencyIndex",
+      "g_clickedInputIndex",
       "g_firstCurrVal",
       "g_secondCurrVal",
     ]),
   },
+  created() {
+    this.d_amountFirst = this.g_firstCurrVal;
+    this.d_amountSecond = this.g_secondCurrVal;
+  },
   mounted() {
-    console.log('calcCurr');
+    console.log("calcCurr");
     // if (localStorage.firstCurrVal) {
     //   this.d_amountFirst = localStorage.firstCurrVal;
     // }
@@ -77,7 +83,7 @@ export default {
   watch: {
     d_amountFirst() {
       if (this.d_amountFirst > 0) {
-        this.d_amountFirst = this.d_amountFirst*1
+        this.d_amountFirst = this.d_amountFirst * 1;
         this.calcAmount();
       } else {
         this.d_amountFirst = 0;
@@ -88,7 +94,7 @@ export default {
     },
     d_amountSecond() {
       if (this.d_amountSecond > 0) {
-        this.d_amountSecond =this.d_amountSecond*1
+        this.d_amountSecond = this.d_amountSecond * 1;
         this.calcAmount();
       } else {
         this.d_amountFirst = 0;
@@ -96,19 +102,17 @@ export default {
       }
       this.a_setFirstCurrVal(this.d_amountFirst);
       this.a_setSecondCurrVal(this.d_amountSecond);
-    }
+    },
   },
-  created() {
-    this.d_amountFirst = this.g_firstCurrVal;
-    this.d_amountSecond = this.g_secondCurrVal;
-  },
+
   methods: {
     ...mapActions([
       "a_toggleModal",
       "a_clickedCurrencyIndex",
+      "a_clickedInputIndex",
       "a_setFirstCurrVal",
       "a_setSecondCurrVal",
-      'a_setActiveCurr'
+      "a_setActiveCurr",
     ]),
     toggleModal(index) {
       this.a_toggleModal();
@@ -119,7 +123,7 @@ export default {
     calcAmount() {
       let firstVal = this.g_activeCurrencies[0].Value / this.g_activeCurrencies[0].Nominal;
       let secondVal = this.g_activeCurrencies[1].Value / this.g_activeCurrencies[1].Nominal;
-      if (this.d_index === 1) {
+      if (this.g_clickedInputIndex === 1) {
         let result = (secondVal / firstVal) * this.d_amountSecond;
         this.d_amountFirst = +result.toFixed(2);
         if (this.d_amountSecond > 0 && this.d_amountSecond < 999) {

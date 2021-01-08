@@ -3,6 +3,7 @@ export const state = () => ({
   s_data: null,
   s_error: null,
   s_clickedCurrencyIndex: null,
+  s_clickedInputIndex:null,
   s_activeCurrencies: [
     {
       CharCode: "GBP",
@@ -43,6 +44,9 @@ export const mutations = {
   },
   m_clickedCurrencyIndex(state, index) {
     state.s_clickedCurrencyIndex = index;
+  },
+  m_clickedInputIndex(state, index) {
+    state.s_clickedInputIndex = index;
   },
   m_activeCurrencies(state, {item, index}) {
     state.s_activeCurrencies[index] = item;
@@ -110,6 +114,9 @@ export const actions = {
   a_clickedCurrencyIndex({commit}, index) {
     commit("m_clickedCurrencyIndex", index);
   },
+  a_clickedInputIndex({commit}, index) {
+    commit("m_clickedInputIndex", index);
+  },
   a_setActiveCurr({commit}, {item, index}) {
     commit("m_activeCurrencies", {item, index});
   },
@@ -135,6 +142,7 @@ export const getters = {
   g_data: s => s.s_data,
   g_activeCurrencies: s => s.s_activeCurrencies,
   g_clickedCurrencyIndex: s => s.s_clickedCurrencyIndex,
+  g_clickedInputIndex: s => s.  s_clickedInputIndex,
   g_firstCurrVal: s => s.s_firstCurrVal,
   g_secondCurrVal: s => s.s_secondCurrVal,
   g_date: s => s.s_date,

@@ -26,7 +26,6 @@
 import BtnBack from "../btns/BtnBack";
 import CurrencyItem from "./CurrencyItem";
 import {mapGetters, mapActions} from "vuex";
-
 export default {
   components: {
     BtnBack,
@@ -49,7 +48,6 @@ export default {
       d_active: null
     };
   },
-
   methods: {
     ...mapActions([
       "a_toggleModal",
