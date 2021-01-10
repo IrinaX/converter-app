@@ -64,16 +64,32 @@ export default {
     };
   },
   async mounted() {
-    this.d_activeBtn = {
-      year: this.g_date.year,
-      month: this.g_date.month * 1,
-      day: this.g_date.day * 1,
-    };
-    this.a_setDate({
-      year: this.d_activeBtn.year,
-      month: this.addZero(this.d_activeBtn.month),
-      day: this.addZero(this.d_activeBtn.day),
-    });
+
+    if (localStorage.date){
+let parsedDate = JSON.parse(localStorage.date);
+      this.d_activeBtn = {
+        year: parsedDate.year,
+        month: parsedDate.month * 1,
+        day: parsedDate.day * 1,
+      };
+      this.a_setDate({
+        year: parsedDate.year,
+        month: parsedDate.month,
+        day: parsedDate.day,
+      });
+    }else
+    {
+      this.d_activeBtn = {
+        year: this.g_date.year,
+        month: this.g_date.month * 1,
+        day: this.g_date.day * 1,
+      };
+      this.a_setDate({
+        year: this.d_activeBtn.year,
+        month: this.addZero(this.d_activeBtn.month),
+        day: this.addZero(this.d_activeBtn.day),
+      });
+    }
     this.d_fullDate = this.setFullDate(this.g_date);
     await this.validateDate();
   },

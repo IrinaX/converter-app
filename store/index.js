@@ -66,6 +66,11 @@ export const mutations = {
     } else {
       state.s_currencyExistence.second = condition;
     }
+    // if (window.localStorage.currencyExistence){
+    //   window.localStorage.currencyExistence = JSON.stringify(state.s_currencyExistence);
+    // }else{
+    //   window.localStorage.setItem('currencyExistence',JSON.stringify(state.s_currencyExistence))
+    // }
   },
   m_firstCurrVal(state, val) {
     state.s_firstCurrVal = val;
@@ -85,6 +90,11 @@ export const mutations = {
   },
   m_date(state, date) {
     state.s_date = date;
+    if (window.localStorage.date){
+      window.localStorage.date = JSON.stringify(date);
+    }else{
+      window.localStorage.setItem('date',JSON.stringify(date))
+    }
   },
   m_error(state, condition) {
     state.s_error = condition;

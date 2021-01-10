@@ -97,11 +97,19 @@ export default {
       // console.log(
       //   JSON.parse(localStorage.activeCurrencies)
       // );
-      JSON.parse(localStorage.activeCurrencies).forEach((item, i, arr) =>{
-        let index = i
-        this.a_setActiveCurr({item,index})
-      })
+      JSON.parse(localStorage.activeCurrencies).forEach((item, i, arr) => {
+        let index = i;
+        this.a_setActiveCurr({item, index});
+      });
     }
+    // if (localStorage.currencyExistence) {
+    //   let firstCurrExist=JSON.parse(localStorage.currencyExistence).first;
+    //   let index =0
+    //   this.a_setCurrencyExistence({firstCurrExist, index});
+    //   let secondCurrExist=JSON.parse(localStorage.currencyExistence).second;
+    //   index =1
+    //   this.a_setCurrencyExistence({secondCurrExist, index});
+    // }
   },
   watch: {
     d_amountFirst() {
@@ -136,6 +144,7 @@ export default {
       "a_setFirstCurrVal",
       "a_setSecondCurrVal",
       "a_setActiveCurr",
+      'a_setCurrencyExistence'
     ]),
     toggleModal(index) {
       this.a_toggleModal();
