@@ -41,7 +41,9 @@ export default {
     ])
   },
   mounted() {
-    this.d_active = this.g_activeCurrencies[this.g_clickedCurrencyIndex].ID;
+    if  (this.g_activeCurrencies.length>1){
+      this.d_active = this.g_activeCurrencies[this.g_clickedCurrencyIndex].ID;
+    }
   },
   data() {
     return {

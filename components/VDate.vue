@@ -65,8 +65,8 @@ export default {
   },
   async mounted() {
 
-    if (localStorage.date){
-let parsedDate = JSON.parse(localStorage.date);
+    if (localStorage.date) {
+      let parsedDate = JSON.parse(localStorage.date);
       this.d_activeBtn = {
         year: parsedDate.year,
         month: parsedDate.month * 1,
@@ -77,8 +77,7 @@ let parsedDate = JSON.parse(localStorage.date);
         month: parsedDate.month,
         day: parsedDate.day,
       });
-    }else
-    {
+    } else {
       this.d_activeBtn = {
         year: this.g_date.year,
         month: this.g_date.month * 1,
