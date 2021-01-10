@@ -3,7 +3,7 @@ export const state = () => ({
   s_data: null,
   s_error: null,
   s_clickedCurrencyIndex: null,
-  s_clickedInputIndex:null,
+  s_clickedInputIndex: null,
   s_activeCurrencies: [
     {
       CharCode: "GBP",
@@ -24,14 +24,18 @@ export const state = () => ({
       Value: 56.8404,
     }
   ],
+  s_currencyExistence: {
+    first: null,
+    second: null
+  },
   s_firstCurrVal: null,
   s_secondCurrVal: null,
   s_date: {
     year: new Date().getFullYear(),
-    month: new Date().getMonth()+1,
+    month: new Date().getMonth() + 1,
     day: new Date().getDate(),
   },
-  s_info:null,
+  s_info: null,
   s_renderKey: Date.now().toString()
 });
 
@@ -50,27 +54,34 @@ export const mutations = {
   },
   m_activeCurrencies(state, {item, index}) {
     state.s_activeCurrencies[index] = item;
-    // if (window.localStorage.activeCurrencies){
-    //   window.localStorage.activeCurrencies = JSON.stringify(state.s_activeCurrencies);
-    // }else{
-    //   window.localStorage.setItem('activeCurrencies',JSON.stringify(state.s_activeCurrencies))
-    // }
+    if (window.localStorage.activeCurrencies){
+      window.localStorage.activeCurrencies = JSON.stringify(state.s_activeCurrencies);
+    }else{
+      window.localStorage.setItem('activeCurrencies',JSON.stringify(state.s_activeCurrencies))
+    }
+  },
+  m_currencyExistence(state, {condition, index}) {
+    if (index == 0){
+      state.s_currencyExistence.first = condition;
+    } else {
+      state.s_currencyExistence.second = condition;
+    }
   },
   m_firstCurrVal(state, val) {
     state.s_firstCurrVal = val;
-    // if (window.localStorage.firstCurrVal){
-    //   window.localStorage.firstCurrVal = val;
-    // }else{
-    //   window.localStorage.setItem('firstCurrVal',JSON.stringify(val))
-    // }
+    if (window.localStorage.firstCurrVal){
+      window.localStorage.firstCurrVal = val;
+    }else{
+      window.localStorage.setItem('firstCurrVal',JSON.stringify(val))
+    }
   },
   m_secondCurrVal(state, val) {
     state.s_secondCurrVal = val;
-    // if (window.localStorage.secondCurrVal){
-    //   window.localStorage.secondCurrVal = val;
-    // }else{
-    //   window.localStorage.setItem('secondCurrVal',JSON.stringify(val))
-    // }
+    if (window.localStorage.secondCurrVal){
+      window.localStorage.secondCurrVal = val;
+    }else{
+      window.localStorage.setItem('secondCurrVal',JSON.stringify(val))
+    }
   },
   m_date(state, date) {
     state.s_date = date;
@@ -78,10 +89,10 @@ export const mutations = {
   m_error(state, condition) {
     state.s_error = condition;
   },
-  m_info(state,text){
+  m_info(state, text) {
     state.s_info = text;
   },
-  m_RenderKey(state, key){
+  m_RenderKey(state, key) {
     state.s_renderKey = key;
   }
 };
@@ -91,21 +102,22 @@ export const actions = {
     let response = await fetch(url)
       .then(res => {
         if (res.ok) {
-          return res
+          return res;
         } else {
-          throw new Error(res.statusText)
-        }})
-      .then((res)=> {
-        ctx.dispatch('a_error',false);
+          throw new Error(res.statusText);
+        }
+      })
+      .then((res) => {
+        ctx.dispatch("a_error", false);
         return res.json();
       })
-      .catch((e)=> {
-        ctx.dispatch('a_error',true);
+      .catch((e) => {
+        ctx.dispatch("a_error", true);
         return console.log(e);
       });
     ctx.commit("m_fetchCurrencies", response);
   },
-  a_error({commit},condition){
+  a_error({commit}, condition) {
     commit("m_error", condition);
   },
   a_toggleModal({commit}) {
@@ -116,6 +128,9 @@ export const actions = {
   },
   a_clickedInputIndex({commit}, index) {
     commit("m_clickedInputIndex", index);
+  },
+  a_setCurrencyExistence({commit}, {condition, index}) {
+      commit("m_currencyExistence", {condition, index});
   },
   a_setActiveCurr({commit}, {item, index}) {
     commit("m_activeCurrencies", {item, index});
@@ -129,11 +144,11 @@ export const actions = {
   a_setDate({commit}, date) {
     commit("m_date", date);
   },
-  a_setInfo({commit},text){
-    commit('m_info',text);
+  a_setInfo({commit}, text) {
+    commit("m_info", text);
   },
-  a_setRenderKey({commit},key){
-    commit('m_RenderKey',key);
+  a_setRenderKey({commit}, key) {
+    commit("m_RenderKey", key);
   }
 };
 
@@ -142,7 +157,8 @@ export const getters = {
   g_data: s => s.s_data,
   g_activeCurrencies: s => s.s_activeCurrencies,
   g_clickedCurrencyIndex: s => s.s_clickedCurrencyIndex,
-  g_clickedInputIndex: s => s.  s_clickedInputIndex,
+  g_clickedInputIndex: s => s.s_clickedInputIndex,
+  g_currencyExistence: s => s.s_currencyExistence,
   g_firstCurrVal: s => s.s_firstCurrVal,
   g_secondCurrVal: s => s.s_secondCurrVal,
   g_date: s => s.s_date,

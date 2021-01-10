@@ -1,6 +1,8 @@
 <template>
   <div class="currencies">
-    <div class="currency-card">
+    <div class="currency-card"
+         v-if="g_currencyExistence.first"
+    >
       <change-currency
         @click.native="toggleModal(0)"
       >
@@ -14,7 +16,19 @@
         {{ g_activeCurrencies[0].Name }}
       </label>
     </div>
-    <div class="currency-card">
+    <div class="currency-card"
+         v-else
+    >
+      <change-currency
+        @click.native="toggleModal(0)"
+      >
+        <span class="currency-card__abbr">---</span>
+      </change-currency>
+      <label class="currency-card__currency">---</label>
+    </div>
+    <div class="currency-card"
+         v-if="g_currencyExistence.second"
+    >
       <change-currency
         @click.native="toggleModal(1)"
       >
@@ -27,6 +41,16 @@
         />
         {{ g_activeCurrencies[1].Name }}
       </label>
+    </div>
+    <div class="currency-card"
+         v-else
+    >
+      <change-currency
+        @click.native="toggleModal(1)"
+      >
+        <span class="currency-card__abbr">---</span>
+      </change-currency>
+      <label class="currency-card__currency">---</label>
     </div>
   </div>
 </template>
@@ -44,7 +68,6 @@ export default {
     return {
       d_amountFirst: null,
       d_amountSecond: null,
-
     };
   },
   computed: {
@@ -54,6 +77,7 @@ export default {
       "g_activeCurrencies",
       "g_clickedCurrencyIndex",
       "g_clickedInputIndex",
+      "g_currencyExistence",
       "g_firstCurrVal",
       "g_secondCurrVal",
     ]),
@@ -63,22 +87,21 @@ export default {
     this.d_amountSecond = this.g_secondCurrVal;
   },
   mounted() {
-    console.log("calcCurr");
-    // if (localStorage.firstCurrVal) {
-    //   this.d_amountFirst = localStorage.firstCurrVal;
-    // }
-    // if (localStorage.secondCurrVal) {
-    //   this.d_amountSecond = localStorage.secondCurrVal;
-    // }
-    // if (localStorage.activeCurrencies) {
-    //   // console.log(
-    //   //   JSON.parse(localStorage.activeCurrencies)
-    //   // );
-    //   JSON.parse(localStorage.activeCurrencies).forEach((item, i, arr) =>{
-    //     let index = i
-    //     this.a_setActiveCurr({item,index})
-    //   })
-    // }
+    if (localStorage.firstCurrVal) {
+      this.d_amountFirst = localStorage.firstCurrVal;
+    }
+    if (localStorage.secondCurrVal) {
+      this.d_amountSecond = localStorage.secondCurrVal;
+    }
+    if (localStorage.activeCurrencies) {
+      // console.log(
+      //   JSON.parse(localStorage.activeCurrencies)
+      // );
+      JSON.parse(localStorage.activeCurrencies).forEach((item, i, arr) =>{
+        let index = i
+        this.a_setActiveCurr({item,index})
+      })
+    }
   },
   watch: {
     d_amountFirst() {
@@ -116,9 +139,7 @@ export default {
     ]),
     toggleModal(index) {
       this.a_toggleModal();
-      // this.clickedCurrencyIndex = index;
       this.a_clickedCurrencyIndex(index);
-      // console.log(this.clickedCurrencyIndex);
     },
     calcAmount() {
       let firstVal = this.g_activeCurrencies[0].Value / this.g_activeCurrencies[0].Nominal;
