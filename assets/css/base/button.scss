@@ -5,7 +5,8 @@
   outline: 0;
   transition: .1s linear;
   font-family: inherit;
-  &:active{
+
+  &:active {
     transform: scale(.8);
   }
 }
@@ -30,9 +31,11 @@
   padding: 30px 7px;
   min-width: 55px;
   margin-bottom: 17px;
-  &:last-child{
+
+  &:last-child {
     margin-bottom: 0;
   }
+
   color: $primary;
   background: $secondary;
   font-size: 25px;
@@ -40,25 +43,29 @@
   border-radius: 23px;
 }
 
-.currency-item{
-  &:active{
+.currency-item {
+  &:active {
     transform: none;
   }
 }
-.btn_change-curr{
-  &:active{
+
+.btn_change-curr {
+  &:active {
     transform: none;
   }
 }
-.btn_date{
+
+.btn_date {
   font-size: 20px;
   padding: 10px;
   transition: 0s linear;
-  &.active{
+
+  &.active {
     background: $primary;
     color: $light;
   }
-  &:active{
+
+  &:active {
     transform: none;
   }
 }
