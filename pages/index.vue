@@ -81,6 +81,6 @@ export default {
 .info {
   line-height: 140%;
   font-size: 15px;
-  margin-bottom: 16px;
+  margin-bottom: 40px;
 }
 </style>

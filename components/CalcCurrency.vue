@@ -173,7 +173,7 @@ export default {
 
 <style scoped lang="scss">
 .currencies {
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
 .currency-card {
