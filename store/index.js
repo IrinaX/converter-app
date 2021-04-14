@@ -5,24 +5,24 @@ export const state = () => ({
     s_clickedCurrencyIndex: null,
     s_clickedInputIndex: null,
     s_activeCurrencies: [
-        {
-            CharCode: 'GBP',
-            ID: 'R01035',
-            Name: 'Фунт стерлингов Соединенного королевства',
-            Nominal: 1,
-            NumCode: '826',
-            Previous: 101.6017,
-            Value: 99.9265,
-        },
-        {
-            CharCode: 'AUD',
-            ID: 'R01010',
-            Name: 'Австралийский доллар',
-            Nominal: 1,
-            NumCode: '036',
-            Previous: 57.0229,
-            Value: 56.8404,
-        },
+        // {
+        //     CharCode: 'GBP',
+        //     ID: 'R01035',
+        //     Name: 'Фунт стерлингов Соединенного королевства',
+        //     Nominal: 1,
+        //     NumCode: '826',
+        //     Previous: 101.6017,
+        //     Value: 99.9265,
+        // },
+        // {
+        //     CharCode: 'AUD',
+        //     ID: 'R01010',
+        //     Name: 'Австралийский доллар',
+        //     Nominal: 1,
+        //     NumCode: '036',
+        //     Previous: 57.0229,
+        //     Value: 56.8404,
+        // },
     ],
     s_currencyExistence: {
         first: null,
@@ -125,8 +125,8 @@ export const actions = {
                 ctx.dispatch('a_error', true);
                 return console.log('На эту дату нет информации. ' + e.message);
             });
-        response.Valute.RUS = {//добавление рубля
-            CharCode: 'RUS',
+        response.Valute.RUB = {//добавление рубля
+            CharCode: 'RUB',
             ID: 'R01014F',
             Name: 'Российский рубль',
             Nominal: 1,
