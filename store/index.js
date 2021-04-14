@@ -5,24 +5,24 @@ export const state = () => ({
     s_clickedCurrencyIndex: null,
     s_clickedInputIndex: null,
     s_activeCurrencies: [
-        // {
-        //   CharCode: "GBP",
-        //   ID: "R01035",
-        //   Name: "Фунт стерлингов Соединенного королевства",
-        //   Nominal: 1,
-        //   NumCode: "826",
-        //   Previous: 101.6017,
-        //   Value: 99.9265,
-        // },
-        // {
-        //   CharCode: "AUD",
-        //   ID: "R01010",
-        //   Name: "Австралийский доллар",
-        //   Nominal: 1,
-        //   NumCode: "036",
-        //   Previous: 57.0229,
-        //   Value: 56.8404,
-        // }
+        {
+            CharCode: 'GBP',
+            ID: 'R01035',
+            Name: 'Фунт стерлингов Соединенного королевства',
+            Nominal: 1,
+            NumCode: '826',
+            Previous: 101.6017,
+            Value: 99.9265,
+        },
+        {
+            CharCode: 'AUD',
+            ID: 'R01010',
+            Name: 'Австралийский доллар',
+            Nominal: 1,
+            NumCode: '036',
+            Previous: 57.0229,
+            Value: 56.8404,
+        },
     ],
     s_currencyExistence: {
         first: null,
@@ -61,7 +61,7 @@ export const mutations = {
         }
     },
     m_currencyExistence(state, {condition, index}) {
-        if (index == 0) {
+        if (index === 0) {
             state.s_currencyExistence.first = condition;
         } else {
             state.s_currencyExistence.second = condition;
@@ -109,7 +109,6 @@ export const mutations = {
 
 export const actions = {
     async a_fetchCurrencies(ctx, url) {
-        let headers = new Headers();
         let response = await fetch(url, {})
             .then(res => {
                 if (res.ok) {
@@ -124,8 +123,18 @@ export const actions = {
             })
             .catch((e) => {
                 ctx.dispatch('a_error', true);
-                return console.log(e);
+                return console.log('На эту дату нет информации. ' + e.message);
             });
+        response.Valute.RUS = {//добавление рубля
+            CharCode: 'RUS',
+            ID: 'R01014F',
+            Name: 'Российский рубль',
+            Nominal: 1,
+            NumCode: '643',
+            Previous: 1,
+            Value: 1,
+        };
+        // console.log(response.Valute.RUS);
         ctx.commit('m_fetchCurrencies', response);
     },
     a_error({commit}, condition) {

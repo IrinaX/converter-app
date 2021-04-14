@@ -18,10 +18,11 @@
                 <div class="date__item-title">Месяц:</div>
                 <div class="date__item-btns">
                     <button type="button" class="btn btn_date"
-                            v-for="month in d_renderData.d_monthsArr"
-                            @click="d_activeBtn.month = month; changeDate('month',month)"
-                            :class="{active: d_activeBtn.month === month}"
-                    >{{ month }}
+                            v-for="(month, key) in d_renderData.d_monthsArr"
+                            :key="key"
+                            @click="d_activeBtn.month = month.number; changeDate('month',month.number)"
+                            :class="{active: d_activeBtn.month === month.number}"
+                    >{{ month.name }}
                     </button>
                 </div>
             </div>
@@ -53,7 +54,58 @@ export default {
             d_renderData: {
                 d_yearsArr: [2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006,
                     2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992],
-                d_monthsArr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                // d_monthsArr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                d_monthsArr: [
+                    {
+                        number: 1,
+                        name:'Янв.',
+                    },
+                    {
+                        number: 2,
+                        name:'Фев.',
+                    },
+                    {
+                        number: 3,
+                        name:'Март',
+                    },
+                    {
+                        number: 4,
+                        name:'Апр.',
+                    },
+                    {
+                        number: 5,
+                        name:'Май',
+                    },
+                    {
+                        number: 6,
+                        name:'Июнь',
+                    },
+                    {
+                        number: 7,
+                        name:'Июль',
+                    },
+                    {
+                        number: 8,
+                        name:'Авг.',
+                    },
+                    {
+                        number: 9,
+                        name:'Сен.',
+                    },
+                    {
+                        number: 10,
+                        name:'Окт.',
+                    },
+                    {
+                        number: 11,
+                        name:'Ноя.',
+                    },
+                    {
+                        number: 12,
+                        name:'Дек.',
+                    },
+                ],
+                //'Фев.','Март','Апр.','Май','Июнь','Июль', 'Авг.', 'Сен.', 'Окт.',
                 d_daysArr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
             },
             d_activeBtn: {
@@ -149,11 +201,11 @@ export default {
                 month: new Date().getMonth() + 1,
                 day: new Date().getDate(),
             };
-            if (this.g_date.year == currDate.year && (this.g_date.month > currDate.month || (this.g_date.day >= currDate.day && this.g_date.month == currDate.month))) {
+            if (this.g_date.year === currDate.year && (this.g_date.month > currDate.month || (this.g_date.day >= currDate.day && this.g_date.month === currDate.month))) {
                 this.a_setInfo('Данные на ' + this.setFullDate(currDate) + ':');
                 await this.a_fetchCurrencies('https://www.cbr-xml-daily.ru/daily_json.js');
             } else {
-                if (this.g_date.year == 1992 && (this.g_date.month < 7 || (this.g_date.day === 1 && this.g_date.month === 7))) {
+                if (this.g_date.year === 1992 && (this.g_date.month < 7 || (this.g_date.day === 1 && this.g_date.month === 7))) {
                     this.a_setInfo('Данные на 1992/07/01:');
                     await this.a_fetchCurrencies('https://www.cbr-xml-daily.ru/archive/1992/07/01/daily_json.js');
                 } else {
