@@ -109,6 +109,7 @@ export const mutations = {
 
 export const actions = {
     async a_fetchCurrencies(ctx, url) {
+        let error = false;
         let response = await fetch(url, {})
             .then(res => {
                 if (res.ok) {
@@ -119,23 +120,27 @@ export const actions = {
             })
             .then((res) => {
                 ctx.dispatch('a_error', false);
+                error = false;
                 return res.json();
             })
             .catch((e) => {
                 ctx.dispatch('a_error', true);
+                error = true;
                 return console.log('На эту дату нет информации. ' + e.message);
             });
-        response.Valute.RUB = {//добавление рубля
-            CharCode: 'RUB',
-            ID: 'R01014F',
-            Name: 'Российский рубль',
-            Nominal: 1,
-            NumCode: '643',
-            Previous: 1,
-            Value: 1,
-        };
+        if (!error){
+            response.Valute.RUB = {//добавление рубля
+                CharCode: 'RUB',
+                ID: 'R01014F',
+                Name: 'Российский рубль',
+                Nominal: 1,
+                NumCode: '643',
+                Previous: 1,
+                Value: 1,
+            };
+            ctx.commit('m_fetchCurrencies', response);
+        }
         // console.log(response.Valute.RUS);
-        ctx.commit('m_fetchCurrencies', response);
     },
     a_error({commit}, condition) {
         commit('m_error', condition);
